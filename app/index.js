@@ -1,14 +1,14 @@
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ImageBackground } from 'react-native';
 import { useRouter } from 'expo-router';
 export default function Home() {
   const router = useRouter();
   return (
-    <View style={styles.container}>
+    <ImageBackground source={require('../assets/backgroundImage.png')} style={styles.container}>
       <Text style={styles.titulo}>🏠 Home</Text>
-      <TouchableOpacity style={styles.botao} onPress={() => router.push('/sobre')}>
+      <TouchableOpacity style={styles.botao} onPress={() => router.push('/cardapio')}>
         <Text style={styles.botaoTexto}>Ir para Sobre</Text>
       </TouchableOpacity>
-    </View>
+    </ImageBackground>
   );
 }
 const styles = StyleSheet.create({
