@@ -1,36 +1,33 @@
-import { useRouter } from 'expo-router';
+import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, ImageBackground } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 export default function CardapioScreen() {
-    const router = useRouter();
   return (
-    <ImageBackground source={require('../assets/backgroundImage.png')} style={styles.container}>
-      
-      {/* Header */}
+    <ImageBackground 
+      source={require('../assets/backgroundImage.png')} 
+      style={styles.container}
+    >
+
+      {/* HEADER */}
       <View style={styles.header}>
         <View>
           <Text style={styles.bemVindo}>Bem-vindo,</Text>
           <Text style={styles.titulo}>Cardápio</Text>
         </View>
 
-        <TouchableOpacity style={styles.cartContainer}>
+        <TouchableOpacity style={styles.cartIcon}>
           <Ionicons name="cart-outline" size={22} color="#fff" />
+
           <View style={styles.badge}>
             <Text style={styles.badgeText}>1</Text>
           </View>
         </TouchableOpacity>
       </View>
 
-      {/* Total do pedido */}
-      <View style={styles.totalBox}>
-        <Text style={styles.totalText}>Total do pedido</Text>
-        <Text style={styles.totalValor}>R$ 8,99</Text>
-      </View>
-
-      {/* Categorias */}
+      {/* MENU */}
       <View style={styles.menu}>
-        
+
         <TouchableOpacity style={styles.menuItem}>
           <Text style={styles.menuText}>Salgados</Text>
           <Ionicons name="arrow-forward" size={18} color="#fff" />
@@ -53,6 +50,23 @@ export default function CardapioScreen() {
         <View style={styles.divider} />
 
       </View>
+
+
+      {/* FOOTER */}
+      <View style={styles.footer}>
+
+        <View style={styles.totalContainer}>
+          <Text style={styles.totalText}>Total do pedido</Text>
+          <Text style={styles.totalValue}>R$ 0,00</Text>
+        </View>
+
+        <TouchableOpacity style={styles.button}>
+          <Ionicons name="cart" size={18} color="#fff" />
+          <Text style={styles.buttonText}> Ver carrinho</Text>
+        </TouchableOpacity>
+
+      </View>
+
     </ImageBackground>
   );
 }
@@ -62,8 +76,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#000",
+    paddingTop: 60,
     paddingHorizontal: 24,
-    paddingTop: 60
+    justifyContent: "space-between"
   },
 
   header: {
@@ -83,7 +98,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold"
   },
 
-  cartContainer: {
+  cartIcon: {
     width: 45,
     height: 45,
     borderRadius: 12,
@@ -111,30 +126,8 @@ const styles = StyleSheet.create({
     fontWeight: "bold"
   },
 
-  totalBox: {
-    marginTop: 30,
-    borderWidth: 1,
-    borderColor: "#333",
-    borderRadius: 14,
-    padding: 18,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center"
-  },
-
-  totalText: {
-    color: "#aaa",
-    fontSize: 16
-  },
-
-  totalValor: {
-    color: "#ff005c",
-    fontSize: 18,
-    fontWeight: "bold"
-  },
-
   menu: {
-    marginTop: 30
+    marginTop: -360
   },
 
   menuItem: {
@@ -153,6 +146,48 @@ const styles = StyleSheet.create({
   divider: {
     height: 1,
     backgroundColor: "#333"
+  },
+
+  footer: {
+    borderTopWidth: 1,
+    borderTopColor: "#333",
+    paddingTop: 16,
+    paddingBottom: 24,
+    paddingHorizontal: 24,
+    marginHorizontal: -24,
+    backgroundColor: "#151414",
+  },
+
+  totalContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 14
+  },
+
+  totalText: {
+    color: "#aaa",
+    fontSize: 16
+  },
+
+  totalValue: {
+    color: "#ff005c",
+    fontSize: 18,
+    fontWeight: "bold"
+  },
+
+  button: {
+    backgroundColor: "#e91e63",
+    height: 55,
+    borderRadius: 16,
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row"
+  },
+
+  buttonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold"
   }
 
 });
