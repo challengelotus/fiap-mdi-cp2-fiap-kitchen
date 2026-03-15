@@ -18,6 +18,6 @@ export const SOBREMESAS = [
     nome: 'Mousse de Maracujá',
     descricao: 'Copo 150g - Refrescante',
     preco: 7.00,
-    imagem: require('../assets/mousse_maracuja.jpg'),
+    imagem: require('../assets/mousse_maracuja.png'),
   },
 ];
