@@ -10,7 +10,7 @@ export default function Home() {
   const [erro, setErro] = useState(false);
   
   const fazerLogin = () => {
-    if (usuario === "rm557516" && senha === "123456"){
+    if (usuario === "rm555332" && senha === "123456"){
       setErro(false);
       router.push('/cardapio');
     } else {
