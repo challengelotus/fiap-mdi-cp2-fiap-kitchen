@@ -91,21 +91,26 @@ const styles = StyleSheet.create({
     marginBottom: 30 
   },
   input: { 
-    backgroundColor: '#1f1f1f', 
-    padding: 15, 
-    borderRadius: 10, 
+    backgroundColor: '#0c0c0c', 
+    padding: 20, 
+    borderRadius: 16, 
     color: '#fff', 
-    marginBottom: 15,
+    marginBottom: 16,
     borderWidth: 1,
-    borderColor: '#333'
+    borderColor: '#302f2f',
+    marginLeft:14,
+    marginRight:14,
   },
   inputErro: { 
     borderColor: '#D21C56' 
   },
   botao: { 
     backgroundColor: '#D21C56', 
-    padding: 16, borderRadius: 12, 
-    alignItems: 'center' 
+    padding: 18, 
+    borderRadius: 16, 
+    alignItems: 'center', 
+    marginLeft:14,
+    marginRight:14,
   },
   botaoTexto: { 
     color: '#fff',
@@ -118,9 +123,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'rgba(210, 28, 86, 0.15)', // Fundo rosa translúcido
     padding: 12,
-    borderRadius: 10,
+    borderRadius: 14,
     marginBottom: 20,
     borderWidth: 1,
+    marginLeft:14,
+    marginRight:14,
     borderColor: '#D21C56',
   },
   errorIcon: {
@@ -131,6 +138,7 @@ const styles = StyleSheet.create({
     color: '#FFF',
     fontWeight: '600',
     fontSize: 14,
+    
   },
     
 });
