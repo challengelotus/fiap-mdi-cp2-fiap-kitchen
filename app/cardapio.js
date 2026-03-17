@@ -23,7 +23,7 @@ export default function CardapioScreen() {
           <Text style={styles.titulo}>Cardápio</Text>
         </View>
 
-        <TouchableOpacity style={styles.cartIcon}>
+        <TouchableOpacity style={styles.cartIcon} onPress={() => router.push('/carrinho')}>
           <Ionicons name="cart-outline" size={22} color="#fff" />
 
           {totalItens > 0 && (
@@ -72,7 +72,7 @@ export default function CardapioScreen() {
           style={[styles.cartButton, totalItens === 0 && styles.cartButtonDisabled]}
           disabled={totalItens === 0}
           activeOpacity={0.8}
-          onPress={() => router.push('/cardapio')}
+          onPress={() => router.push('/carrinho')}
         >
           <Ionicons 
             name="cart-outline" 
