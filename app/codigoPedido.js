@@ -2,14 +2,13 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-// Importação obrigatória para Safe Area
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-const bgImage = require('../assets/bg_pattern.png');
+// const bgImage = require('../assets/bg_pattern.png');
 
 export default function CodigoPagamentoScreen() {
   const router = useRouter();
-  const insets = useSafeAreaInsets(); // Hook para pegar as áreas seguras
+  const insets = useSafeAreaInsets(); 
 
   const handleNewOrder = () => {
     router.replace('/');
@@ -44,7 +43,7 @@ export default function CodigoPagamentoScreen() {
 
       </ScrollView>
 
-      {/* BOTÃO NOVO PEDIDO - AGORA FORA DO SCROLLVIEW E COM SAFE AREA */}
+      {/* BOTÃO NOVO PEDIDO*/}
       <View style={[styles.footer, { paddingBottom: insets.bottom + 20 }]}>
         <TouchableOpacity style={styles.newOrderButton} onPress={handleNewOrder}>
           <Text style={styles.newOrderButtonText}>Novo pedido</Text>

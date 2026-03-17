@@ -2,14 +2,13 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-// Importação obrigatória para Safe Area
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-const bgImage = require('../assets/bg_pattern.png');
+// const bgImage = require('../assets/bg_pattern.png');
 
 export default function PagamentoScreen() {
   const router = useRouter();
-  const insets = useSafeAreaInsets(); // Hook para pegar as áreas seguras
+  const insets = useSafeAreaInsets();
 
   const [selectedPayment, setSelectedPayment] = useState('PIX');
 
@@ -63,7 +62,7 @@ export default function PagamentoScreen() {
 
       </ScrollView>
 
-      {/* BOTÃO CONFIRMAR - AGORA FORA DO SCROLLVIEW E COM SAFE AREA */}
+      {/* BOTÃO CONFIRMAR */}
       <View style={[styles.footer, { paddingBottom: insets.bottom + 20 }]}>
         <TouchableOpacity style={styles.confirmButton} onPress={handleConfirm}>
           <Text style={styles.confirmButtonText}>Confirmar Pagamento</Text>
@@ -80,7 +79,7 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     padding: 24,
-    paddingTop: 60, // Espaço para a barra de status superior
+    paddingTop: 60,
   },
   header: {
     flexDirection: 'row',
@@ -162,7 +161,7 @@ const styles = StyleSheet.create({
   // ESTILO PARA O CONTÊINER DO BOTÃO DE RODAPÉ
   footer: {
     paddingHorizontal: 24,
-    marginTop: 'auto', // Garante que fique no final, mesmo com pouco conteúdo
+    marginTop: 'auto',
   },
   confirmButton: {
     backgroundColor: '#E31C5F',
