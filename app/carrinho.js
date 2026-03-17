@@ -102,13 +102,13 @@ export default function Carrinho () {
           onPress={() => router.push('/pagamento')}
         >
           <Ionicons 
-            name="cart-outline" 
+            name="checkmark-outline" 
             size={24} 
             color={totalItens === 0 ? "#777" : "#fff"} 
             style={{ marginRight: 8 }} 
           />
           <Text style={[styles.cartButtonText, totalItens === 0 && { color: '#777' }]}>
-            Finalizar Pedido
+            Confirmar Pedido
           </Text>
         </TouchableOpacity>
       </View>
@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: "#333",
     paddingTop: 16,
-    paddingBottom: 24,
+    paddingBottom: 50,
     paddingHorizontal: 24,
     backgroundColor: "#151515",
   },

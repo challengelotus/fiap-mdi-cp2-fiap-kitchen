@@ -24,7 +24,7 @@ export default function CodigoPagamentoScreen() {
   const senha = gerarSenha();
 
   const handleNewOrder = () => {
-    router.replace('/');
+    router.replace('/cardapio');
   };
 
   return (

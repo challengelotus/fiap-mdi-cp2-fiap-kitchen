@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: "#333",
     paddingTop: 16,
-    paddingBottom: 24,
+    paddingBottom: 50,
     paddingHorizontal: 24,
     backgroundColor: "#151515",
   },

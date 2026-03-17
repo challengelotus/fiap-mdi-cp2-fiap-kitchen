@@ -65,7 +65,7 @@ export default function PagamentoScreen() {
         <View style={styles.summaryCard}>
           <Text style={styles.summaryTitle}>Total do pedido</Text>
           <Text style={styles.summaryPrice}>{totalFormatado}</Text>
-          <Text style={styles.summaryDetails}>{totalItens}</Text>
+          <Text style={styles.summaryDetails}>{totalItens} itens selecionados</Text>
           <Loading visible={loading} />
         </View>
 

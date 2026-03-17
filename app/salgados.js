@@ -210,11 +210,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold', 
     fontSize: 16 
   },
-  footer: { 
-    padding: 20, 
-    borderTopWidth: 1, 
-    borderTopColor: '#333',
-    backgroundColor: '#151515'
+  footer: {
+    borderTopWidth: 1,
+    borderTopColor: "#333",
+    paddingTop: 16,
+    paddingBottom: 50,
+    paddingHorizontal: 24,
+    backgroundColor: "#151515",
   },
   totalRow: { 
     flexDirection: 'row', 
