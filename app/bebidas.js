@@ -27,7 +27,7 @@ export default function Bebidas() {
           </TouchableOpacity>
           
           <View style={styles.headerTextContainer}>
-            <Text style={styles.headerTitle}>Sobremesas</Text>
+            <Text style={styles.headerTitle}>Bebidas</Text>
             <Text style={styles.headerSubtitle}>{totalItens} itens</Text>
           </View>
         </View>
@@ -89,7 +89,7 @@ export default function Bebidas() {
             style={[styles.cartButton, totalItens === 0 && styles.cartButtonDisabled]}
             disabled={totalItens === 0}
             activeOpacity={0.8}
-            onPress={() => router.push('/cardapio')}
+            onPress={() => router.push('/carrinho')}
           >
             <Ionicons 
               name="cart-outline" 

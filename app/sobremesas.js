@@ -89,7 +89,7 @@ export default function Sobremesas() {
             style={[styles.cartButton, totalItens === 0 && styles.cartButtonDisabled]}
             disabled={totalItens === 0}
             activeOpacity={0.8}
-            onPress={() => router.push('/cardapio')}
+            onPress={() => router.push('/carrinho')}
           >
             <Ionicons 
               name="cart-outline" 
