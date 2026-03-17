@@ -4,11 +4,24 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-// const bgImage = require('../assets/bg_pattern.png');
+const bgImage = require('../assets/backgroundImage.png');
+
+function gerarSenha() {
+  const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let senha = '';
+
+  for (let i = 0; i < 8; i++) {
+    const indice = Math.floor(Math.random() * caracteres.length);
+    senha += caracteres[indice];
+  }
+
+  return senha;
+}
 
 export default function CodigoPagamentoScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets(); 
+  const senha = gerarSenha();
 
   const handleNewOrder = () => {
     router.replace('/');
@@ -37,7 +50,7 @@ export default function CodigoPagamentoScreen() {
         {/* CARTÃO DO CÓDIGO */}
         <View style={styles.codeCard}>
           <Text style={styles.codeTitle}>Código do pedido</Text>
-          <Text style={styles.codeValue}>TA9E3RT1</Text>
+          <Text style={styles.codeValue}>{senha}</Text>
           <Text style={styles.codeSubtitle}>Apresente este código ao retirar seu pedido</Text>
         </View>
 

@@ -1,22 +1,52 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, ScrollView, Modal, ActivityIndicator } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useCarrinho } from '../context/CarrinhoContext';
 
-// const bgImage = require('../assets/bg_pattern.png');
+const bgImage = require('../assets/backgroundImage.png');
+
+function Loading({ visible }) {
+  return (
+    <Modal transparent animationType="fade" visible={visible}>
+      <View style={styles.modalBackground}>
+        <View style={styles.loadingBox}>
+          <ActivityIndicator size="large" />
+          <Text style={styles.loadingText}>Carregando...</Text>
+        </View>
+      </View>
+    </Modal>
+  );
+}
 
 export default function PagamentoScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
+  const { valorTotal, totalItens } = useCarrinho();
+  const totalFormatado = valorTotal.toLocaleString('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+  });
 
   const [selectedPayment, setSelectedPayment] = useState('PIX');
 
-  const handleConfirm = () => {
-    router.push('/codigoPagamento');
+  const handleConfirm = async () => {
+    simularRequisicao();
+    await delay(3000);
+    router.push('/codigoPedido');
   };
 
   const paymentMethods = ['PIX', 'Crédito', 'Débito', 'Dinheiro'];
+
+  const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));   
+
+  const [loading, setLoading] = useState(false);
+  const simularRequisicao = async () => {
+    setLoading(true);
+    await delay(3000);
+    setLoading(false);
+  };
 
   return (
     <ImageBackground source={bgImage} style={styles.container}>
@@ -34,8 +64,9 @@ export default function PagamentoScreen() {
         {/* RESUMO DO PEDIDO */}
         <View style={styles.summaryCard}>
           <Text style={styles.summaryTitle}>Total do pedido</Text>
-          <Text style={styles.summaryPrice}>R$ 8,99</Text>
-          <Text style={styles.summaryDetails}>1 item</Text>
+          <Text style={styles.summaryPrice}>{totalFormatado}</Text>
+          <Text style={styles.summaryDetails}>{totalItens}</Text>
+          <Loading visible={loading} />
         </View>
 
         {/* FORMA DE PAGAMENTO */}
@@ -174,4 +205,22 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '600',
   },
+
+  modalBackground: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  loadingBox: {
+    width: 150,
+    height: 150,
+    backgroundColor: '#151515',
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  loadingText: {
+    color: '#fff'
+  }
 });
