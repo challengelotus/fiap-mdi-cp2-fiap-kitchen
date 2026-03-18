@@ -120,7 +120,6 @@ const styles = StyleSheet.create({
     errorContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
     backgroundColor: 'rgba(210, 28, 86, 0.15)', // Fundo rosa translúcido
     padding: 12,
     borderRadius: 14,
