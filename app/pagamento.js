@@ -13,7 +13,7 @@ function Loading({ visible }) {
       <View style={styles.modalBackground}>
         <View style={styles.loadingBox}>
           <ActivityIndicator size="large" />
-          <Text style={styles.loadingText}>Carregando...</Text>
+          <Text style={styles.loadingText}>Processando...</Text>
         </View>
       </View>
     </Modal>
