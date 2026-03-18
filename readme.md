@@ -156,32 +156,32 @@ npx expo start
 
 ### Telas Login
 
-![TelaLogin](./prints/TelaLogin.jpg)
-![TelaLoginErro](./prints/TelaLoginErro.jpg)
+<img src="./prints/TelaLogin.jpg" width='200'>
+<img src="./prints/TelaLoginErro.jpg" width='200'>
 
 ### Tela Cardapio
 
-![TelaCardapio](./prints/TelaCardapio.jpg)
+<img src="./prints/TelaCardapio.jpg" width='200'>
 
 ### Telas Produtos
 
-![TelaSalgados](./prints/TelaSalgados.jpg)
-![TelaBebidas](./prints/TelaBebidas.jpg)
-![TelaSobremesas](./prints/TelaSobremesas.jpg)
+<img src="./prints/TelaSalgados.jpg" width='200'>
+<img src="./prints/TelaBebidas.jpg" width='200'>
+<img src="./prints/TelaSobremesas.jpg" width='200'>
 
 ### Telas Carrinho
 
-![TelaCarrinhoVazio](./prints/TelaCarrinhoVazio.jpg)
-![TelaCarrinhoCheio](./prints/TelaCarrinhoCheio.jpg)
+<img src="./prints/TelaCarrinhoVazio.jpg" width='200'>
+<img src="./prints/TelaCarrinhoCheio.jpg" width='200'>
 
 ### Telas Pagamento
 
-![TelaPagamento](./prints/TelaPagamento.jpg)
-![TelaProcessando](./prints/TelaProcessando.jpg)
+<img src="./prints/TelaPagamento.jpg" width='200'>
+<img src="./prints/TelaProcessando.jpg" width='200'>
 
 ### Tela Pedido Confirmado
 
-![TelaCorfirmado](./prints/TelaCorfirmado.jpg)
+<img src="./prints/TelaCorfirmado.jpg" width='200'>
 
 ### Vídeo Demonstrativo
 
