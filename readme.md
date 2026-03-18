@@ -185,7 +185,7 @@ npx expo start
 
 ### Vídeo Demonstrativo
 
-<video src="./prints/gravacao-tela.mp4" controls></video>
+https://github.com/user-attachments/assets/32cbb07e-9842-4935-b68d-f5203309ee52
 
 ---
 
