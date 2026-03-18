@@ -154,12 +154,38 @@ npx expo start
 
 ## 🎥 Demonstração
 
-> Adicione aqui um vídeo demonstrando o funcionamento do aplicativo
+### Telas Login
 
-Exemplo:
+![TelaLogin](./prints/TelaLogin.jpg)
+![TelaLoginErro](./prints/TelaLoginErro.jpg)
 
-* Link do vídeo:
-* GIF (opcional):
+### Tela Cardapio
+
+![TelaCardapio](./prints/TelaCardapio.jpg)
+
+### Telas Produtos
+
+![TelaSalgados](./prints/TelaSalgados.jpg)
+![TelaBebidas](./prints/TelaBebidas.jpg)
+![TelaSobremesas](./prints/TelaSobremesas.jpg)
+
+### Telas Carrinho
+
+![TelaCarrinhoVazio](./prints/TelaCarrinhoVazio.jpg)
+![TelaCarrinhoCheio](./prints/TelaCarrinhoCheio.jpg)
+
+### Telas Pagamento
+
+![TelaPagamento](./prints/TelaPagamento.jpg)
+![TelaProcessando](./prints/TelaProcessando.jpg)
+
+### Tela Pedido Confirmado
+
+![TelaCorfirmado](./prints/TelaCorfirmado.jpg)
+
+### Vídeo Demonstrativo
+
+<video src="./prints/gravacao-tela.mp4" controls></video>
 
 ---
 
