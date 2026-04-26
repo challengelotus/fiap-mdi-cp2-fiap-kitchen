@@ -27,7 +27,7 @@ export default function CadastroScreen() {
     const novosErros = {};
     if (!nome.trim()) novosErros.nome = 'O nome é obrigatório';
     if (!email.trim()) novosErros.email = 'O e-mail é obrigatório';
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) novosErros.email = 'Formato de e-mail inválido';
+    else if (!email.endsWith('@fiap.com.br')) novosErros.email = 'Use seu e-mail FIAP (@fiap.com.br)';
     if (!senha) novosErros.senha = 'A senha é obrigatória';
     else if (senha.length < 6) novosErros.senha = 'A senha deve ter no mínimo 6 caracteres';
     if (!confirmarSenha) novosErros.confirmarSenha = 'Confirme a senha';

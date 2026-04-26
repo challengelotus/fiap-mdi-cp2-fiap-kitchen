@@ -29,7 +29,7 @@ export default function LoginScreen() {
   const validar = () => {
     const novosErros = {};
     if (!email.trim()) novosErros.email = 'O e-mail é obrigatório';
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) novosErros.email = 'Formato de e-mail inválido';
+    else if (!email.endsWith('@fiap.com.br')) novosErros.email = 'Use seu e-mail FIAP (@fiap.com.br)';
     if (!senha) novosErros.senha = 'A senha é obrigatória';
     setErros(novosErros);
     return Object.keys(novosErros).length === 0;
