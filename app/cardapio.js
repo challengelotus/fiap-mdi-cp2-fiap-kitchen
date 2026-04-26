@@ -1,216 +1,151 @@
-import { View, Text, StyleSheet, TouchableOpacity, ImageBackground } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, StatusBar } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from 'expo-router';
-import { useCarrinho } from '../context/CarrinhoContext'
+import { useCarrinho } from '../context/CarrinhoContext';
+import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 
 export default function CardapioScreen() {
   const router = useRouter();
   const { totalItens, valorTotal } = useCarrinho();
-  const totalFormatado = valorTotal.toLocaleString('pt-BR', {
-    style: 'currency',
-    currency: 'BRL',
-  });
-  return (
-    <ImageBackground 
-      source={require('../assets/backgroundImage.png')} 
-      style={styles.container}
-    >
+  const { usuario, logout } = useAuth();
+  const { theme, isDark, toggleTheme } = useTheme();
 
+  const totalFormatado = valorTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+  const handleLogout = async () => {
+    await logout();
+    router.replace('/');
+  };
+
+  const s = styles(theme);
+
+  const inner = (
+    <View style={s.inner}>
       {/* HEADER */}
-      <View style={styles.header}>
+      <View style={s.header}>
         <View>
-          <Text style={styles.bemVindo}>Bem-vindo,</Text>
-          <Text style={styles.titulo}>Cardápio</Text>
+          <Text style={s.bemVindo}>Bem-vindo,</Text>
+          <Text style={s.titulo}>{usuario?.nome?.split(' ')[0] || 'Cliente'}</Text>
         </View>
-
-        <TouchableOpacity style={styles.cartIcon} onPress={() => router.push('/carrinho')}>
-          <Ionicons name="cart-outline" size={22} color="#fff" />
-
-          {totalItens > 0 && (
-            <View style={styles.badge} disabled={totalItens === 0}>
-              <Text style={styles.badgeText}>{totalItens}</Text>
-            </View>
-          )}
-        </TouchableOpacity>
+        <View style={s.headerIcons}>
+          <TouchableOpacity style={s.iconBtn} onPress={toggleTheme}>
+            <Ionicons name={isDark ? 'sunny-outline' : 'moon-outline'} size={20} color={theme.text} />
+          </TouchableOpacity>
+          <TouchableOpacity style={s.iconBtn} onPress={() => router.push('/historico')}>
+            <Ionicons name="receipt-outline" size={20} color={theme.text} />
+          </TouchableOpacity>
+          <TouchableOpacity style={[s.iconBtn, { position: 'relative' }]} onPress={() => router.push('/carrinho')}>
+            <Ionicons name="cart-outline" size={20} color={theme.text} />
+            {totalItens > 0 && (
+              <View style={s.badge}>
+                <Text style={s.badgeText}>{totalItens}</Text>
+              </View>
+            )}
+          </TouchableOpacity>
+          <TouchableOpacity style={s.iconBtn} onPress={handleLogout}>
+            <Ionicons name="log-out-outline" size={20} color={theme.primary} />
+          </TouchableOpacity>
+        </View>
       </View>
 
       {/* MENU */}
-      <View style={styles.menu}>
-
-        <TouchableOpacity style={styles.menuItem} onPress={() => router.push('/salgados')}>
-          <Text style={styles.menuText}>Salgados</Text>
-          <Ionicons name="arrow-forward" size={18} color="#fff" />
-        </TouchableOpacity>
-
-        <View style={styles.divider} />
-
-        <TouchableOpacity style={styles.menuItem} onPress={() => router.push('/bebidas')}>
-          <Text style={styles.menuText}>Bebidas</Text>
-          <Ionicons name="arrow-forward" size={18} color="#fff" />
-        </TouchableOpacity>
-
-        <View style={styles.divider} />
-
-        <TouchableOpacity style={styles.menuItem} onPress={() => router.push('/sobremesas')}>
-          <Text style={styles.menuText}>Sobremesas</Text>
-          <Ionicons name="arrow-forward" size={18} color="#fff" />
-        </TouchableOpacity>
-
-        <View style={styles.divider} />
-
+      <View style={s.menu}>
+        {[
+          { label: 'Salgados', rota: '/salgados' },
+          { label: 'Bebidas', rota: '/bebidas' },
+          { label: 'Sobremesas', rota: '/sobremesas' },
+        ].map((item, i, arr) => (
+          <View key={item.rota}>
+            <TouchableOpacity style={s.menuItem} onPress={() => router.push(item.rota)}>
+              <Text style={s.menuText}>{item.label}</Text>
+              <Ionicons name="arrow-forward" size={18} color={theme.text} />
+            </TouchableOpacity>
+            {i < arr.length - 1 && <View style={s.divider} />}
+          </View>
+        ))}
       </View>
 
-
       {/* FOOTER */}
-      <View style={styles.footer}>
-        <View style={styles.totalContainer}>
-          <Text style={styles.totalLabel}>Total do pedido</Text>
-          <Text style={styles.totalValue}>{totalFormatado}</Text>
+      <View style={s.footer}>
+        <View style={s.totalContainer}>
+          <Text style={s.totalLabel}>Total do pedido</Text>
+          <Text style={s.totalValue}>{totalFormatado}</Text>
         </View>
-        
-        <TouchableOpacity 
-          style={[styles.cartButton, totalItens === 0 && styles.cartButtonDisabled]}
+        <TouchableOpacity
+          style={[s.cartButton, totalItens === 0 && s.cartButtonDisabled]}
           disabled={totalItens === 0}
           activeOpacity={0.8}
           onPress={() => router.push('/carrinho')}
         >
-          <Ionicons 
-            name="cart-outline" 
-            size={24} 
-            color={totalItens === 0 ? "#777" : "#fff"} 
-            style={{ marginRight: 8 }} 
-          />
-          <Text style={[styles.cartButtonText, totalItens === 0 && { color: '#777' }]}>
-            Ver carrinho({totalItens})
+          <Ionicons name="cart-outline" size={24} color={totalItens === 0 ? "#777" : "#fff"} style={{ marginRight: 8 }} />
+          <Text style={[s.cartButtonText, totalItens === 0 && { color: '#777' }]}>
+            Ver carrinho ({totalItens})
           </Text>
         </TouchableOpacity>
       </View>
+    </View>
+  );
 
-    </ImageBackground>
+  if (isDark) {
+    return (
+      <ImageBackground source={theme.backgroundImage} style={s.container}>
+        <StatusBar barStyle="light-content" />
+        {inner}
+      </ImageBackground>
+    );
+  }
+
+  return (
+    <View style={[s.container, { backgroundColor: theme.background }]}>
+      <StatusBar barStyle="dark-content" />
+      {inner}
+    </View>
   );
 }
 
-const styles = StyleSheet.create({
-
-  container: {
-    flex: 1,
-    backgroundColor: "#000",
-    paddingTop: 60,
-    justifyContent: "space-between"
-  },
-
+const styles = (theme) => StyleSheet.create({
+  container: { flex: 1 },
+  inner: { flex: 1, paddingTop: 60, justifyContent: 'space-between' },
   header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingHorizontal: 24,
+    flexDirection: 'row', justifyContent: 'space-between',
+    alignItems: 'center', paddingHorizontal: 24,
   },
-
-  bemVindo: {
-    color: "#aaa",
-    fontSize: 16
+  bemVindo: { color: theme.textSecondary, fontSize: 15 },
+  titulo: { color: theme.text, fontSize: 30, fontWeight: 'bold' },
+  headerIcons: { flexDirection: 'row', gap: 8 },
+  iconBtn: {
+    width: 42, height: 42, borderRadius: 12,
+    borderWidth: 1, borderColor: theme.cardBorder,
+    backgroundColor: theme.card,
+    alignItems: 'center', justifyContent: 'center',
   },
-
-  titulo: {
-    color: "#fff",
-    fontSize: 32,
-    fontWeight: "bold"
-  },
-
-  cartIcon: {
-    width: 45,
-    height: 45,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: "#333",
-    alignItems: "center",
-    justifyContent: "center"
-  },
-
   badge: {
-    position: "absolute",
-    top: -4,
-    right: -4,
-    backgroundColor: "#D21C56",
-    width: 18,
-    height: 18,
-    borderRadius: 9,
-    alignItems: "center",
-    justifyContent: "center"
+    position: 'absolute', top: -4, right: -4,
+    backgroundColor: theme.primary,
+    width: 18, height: 18, borderRadius: 9,
+    alignItems: 'center', justifyContent: 'center',
   },
-
-  badgeText: {
-    color: "#fff",
-    fontSize: 10,
-    fontWeight: "bold"
-  },
-
-  menu: {
-    marginTop: -360,
-    paddingHorizontal: 24,
-  },
-
+  badgeText: { color: '#fff', fontSize: 10, fontWeight: 'bold' },
+  menu: { paddingHorizontal: 24, marginTop: -300 },
   menuItem: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingVertical: 20
+    flexDirection: 'row', justifyContent: 'space-between',
+    alignItems: 'center', paddingVertical: 20,
   },
-
-  menuText: {
-    color: "#fff",
-    fontSize: 20,
-    fontWeight: "600"
-  },
-
-  divider: {
-    height: 1,
-    backgroundColor: "#333"
-  },
-
+  menuText: { color: theme.text, fontSize: 20, fontWeight: '600' },
+  divider: { height: 1, backgroundColor: theme.divider },
   footer: {
-    borderTopWidth: 1,
-    borderTopColor: "#333",
-    paddingTop: 16,
-    paddingBottom: 50,
-    paddingHorizontal: 24,
-    backgroundColor: "#151515",
+    borderTopWidth: 1, borderTopColor: theme.footerBorder,
+    paddingTop: 16, paddingBottom: 50, paddingHorizontal: 24,
+    backgroundColor: theme.footerBg,
   },
-
-  totalContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 14
-  },
-
-  totalLabel: {
-    color: "#ffffff",
-    fontSize: 16
-  },
-
-  totalValue: {
-    color: "#D21C56",
-    fontSize: 22,
-    fontWeight: "bold"
-  },
-
+  totalContainer: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 14 },
+  totalLabel: { color: theme.text, fontSize: 16 },
+  totalValue: { color: theme.primary, fontSize: 22, fontWeight: 'bold' },
   cartButton: {
-    backgroundColor: "#D21C56",
-    height: 55,
-    borderRadius: 16,
-    alignItems: "center",
-    justifyContent: "center",
-    flexDirection: "row"
+    backgroundColor: theme.primary, height: 55, borderRadius: 16,
+    alignItems: 'center', justifyContent: 'center', flexDirection: 'row',
   },
-
-  cartButtonDisabled: { 
-    backgroundColor: '#222' 
-  },
-
-  cartButtonText: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "bold"
-  }
-
+  cartButtonDisabled: { backgroundColor: theme.card },
+  cartButtonText: { color: '#fff', fontSize: 16, fontWeight: 'bold' },
 });
