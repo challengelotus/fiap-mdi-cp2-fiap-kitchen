@@ -4,248 +4,102 @@ import { useCarrinho } from '../context/CarrinhoContext';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { SOBREMESAS } from '../data/sobremesas';
+import { useTheme } from '../context/ThemeContext';
 
 export default function Sobremesas() {
   const router = useRouter();
   const { carrinho, alterarQuantidade, totalItens, valorTotal } = useCarrinho();
-  const PRODUTOS = SOBREMESAS;
+  const { theme, isDark } = useTheme();
+  const s = styles(theme);
+  const totalFormatado = valorTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
-  const totalFormatado = valorTotal.toLocaleString('pt-BR', {
-    style: 'currency',
-    currency: 'BRL',
-  });
-
-  return (
-    <ImageBackground source={require('../assets/backgroundImage.png')} style={styles.safeArea}>
-      <StatusBar style="light"/>
-      
-      <View style={styles.container}>
-        
-        <View style={styles.header}>
-          <TouchableOpacity style={styles.backButton} onPress={() => router.canGoBack() ? router.back() : router.replace('/cardapio')}>
-            <Ionicons name="chevron-back" size={24} color="#fff" />
-          </TouchableOpacity>
-          
-          <View style={styles.headerTextContainer}>
-            <Text style={styles.headerTitle}>Sobremesas</Text>
-            <Text style={styles.headerSubtitle}>{totalItens} itens</Text>
-          </View>
-        </View>
-
-        <ScrollView 
-          contentContainerStyle={styles.scrollContent} 
-          showsVerticalScrollIndicator={false}
-        >
-          {PRODUTOS.map((produto) => {
-            const qtd = carrinho[produto.id] || 0;
-            return (
-              <View key={produto.id} style={styles.card}>
-                <Image source={produto.imagem} style={styles.productImage} resizeMode="cover" />
-                
-                <View style={styles.productInfo}>
-                  <Text style={styles.productName}>{produto.nome}</Text>
-                  <Text style={styles.productDescription}>{produto.descricao}</Text>
-                  <Text style={styles.productPrice}>
-                    {produto.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
-                  </Text>
-                </View>
-
-                {qtd === 0 ? (
-                  <TouchableOpacity 
-                    style={styles.addButtonSmall} 
-                    onPress={() => alterarQuantidade(produto.id, 'soma')}
-                  >
-                    <Ionicons name="add" size={20} color="#fff" />
-                  </TouchableOpacity>
-                ) : (
-                  <View style={styles.counterContainer}>
-                    <TouchableOpacity 
-                      style={styles.counterButton} 
-                      onPress={() => alterarQuantidade(produto.id, 'sub')}
-                    >
-                      <Ionicons name="remove" size={18} color="#fff" />
-                    </TouchableOpacity>
-                    <Text style={styles.counterText}>{qtd}</Text>
-                    <TouchableOpacity 
-                      style={styles.addButtonSmall} 
-                      onPress={() => alterarQuantidade(produto.id, 'soma')}
-                    >
-                      <Ionicons name="add" size={20} color="#fff" />
-                    </TouchableOpacity>
-                  </View>
-                )}
-              </View>
-            );
-          })}
-        </ScrollView>
-
-        <View style={styles.footer}>
-          <View style={styles.totalRow}>
-            <Text style={styles.totalLabel}>Total do pedido</Text>
-            <Text style={styles.totalValue}>{totalFormatado}</Text>
-          </View>
-          
-          <TouchableOpacity 
-            style={[styles.cartButton, totalItens === 0 && styles.cartButtonDisabled]}
-            disabled={totalItens === 0}
-            activeOpacity={0.8}
-            onPress={() => router.push('/carrinho')}
-          >
-            <Ionicons 
-              name="cart-outline" 
-              size={24} 
-              color={totalItens === 0 ? "#777" : "#fff"} 
-              style={{ marginRight: 8 }} 
-            />
-            <Text style={[styles.cartButtonText, totalItens === 0 && { color: '#777' }]}>
-              Ver carrinho({totalItens})
-            </Text>
-          </TouchableOpacity>
+  const lista = (
+    <View style={s.container}>
+      <StatusBar style={isDark ? 'light' : 'dark'} />
+      <View style={s.header}>
+        <TouchableOpacity style={s.backButton} onPress={() => router.canGoBack() ? router.back() : router.replace('/cardapio')}>
+          <Ionicons name="chevron-back" size={24} color={theme.text} />
+        </TouchableOpacity>
+        <View style={s.headerTextContainer}>
+          <Text style={s.headerTitle}>Sobremesas</Text>
+          <Text style={s.headerSubtitle}>{totalItens} itens</Text>
         </View>
       </View>
-    </ImageBackground>
+      <ScrollView contentContainerStyle={s.scrollContent} showsVerticalScrollIndicator={false}>
+        {SOBREMESAS.map((produto) => {
+          const qtd = carrinho[produto.id] || 0;
+          return (
+            <View key={produto.id} style={s.card}>
+              <Image source={produto.imagem} style={s.productImage} resizeMode="cover" />
+              <View style={s.productInfo}>
+                <Text style={s.productName}>{produto.nome}</Text>
+                <Text style={s.productDescription}>{produto.descricao}</Text>
+                <Text style={s.productPrice}>{produto.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</Text>
+              </View>
+              {qtd === 0 ? (
+                <TouchableOpacity style={s.addButton} onPress={() => alterarQuantidade(produto.id, 'soma')}>
+                  <Ionicons name="add" size={20} color="#fff" />
+                </TouchableOpacity>
+              ) : (
+                <View style={s.counterContainer}>
+                  <TouchableOpacity style={s.counterButton} onPress={() => alterarQuantidade(produto.id, 'sub')}>
+                    <Ionicons name="remove" size={18} color={theme.text} />
+                  </TouchableOpacity>
+                  <Text style={s.counterText}>{qtd}</Text>
+                  <TouchableOpacity style={s.addButton} onPress={() => alterarQuantidade(produto.id, 'soma')}>
+                    <Ionicons name="add" size={20} color="#fff" />
+                  </TouchableOpacity>
+                </View>
+              )}
+            </View>
+          );
+        })}
+      </ScrollView>
+      <View style={s.footer}>
+        <View style={s.totalRow}>
+          <Text style={s.totalLabel}>Total do pedido</Text>
+          <Text style={s.totalValue}>{totalFormatado}</Text>
+        </View>
+        <TouchableOpacity
+          style={[s.cartButton, totalItens === 0 && s.cartButtonDisabled]}
+          disabled={totalItens === 0} activeOpacity={0.8}
+          onPress={() => router.push('/carrinho')}
+        >
+          <Ionicons name="cart-outline" size={24} color={totalItens === 0 ? "#777" : "#fff"} style={{ marginRight: 8 }} />
+          <Text style={[s.cartButtonText, totalItens === 0 && { color: '#777' }]}>Ver carrinho ({totalItens})</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
   );
+
+  if (isDark) return <ImageBackground source={require('../assets/backgroundImage.png')} style={s.safeArea}>{lista}</ImageBackground>;
+  return <View style={[s.safeArea, { backgroundColor: theme.background }]}>{lista}</View>;
 }
 
-const styles = StyleSheet.create({
-  safeArea: { 
-    flex: 1,
-    backgroundColor: "#000",
-    paddingTop: 60,
-  },
-  container: { 
-    flex: 1, 
-  },
-  header: { 
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingTop: 10,
-    paddingBottom: 20,
-  },
-  backButton: { 
-    backgroundColor: '#151515', 
-    padding: 10, 
-    borderRadius: 12, 
-    borderWidth: 1, 
-    borderColor: '#252525' 
-  },
-  headerTextContainer: {
-    flex: 1,
-    marginLeft: 15,
-  },
-  headerTitle: { 
-    color: '#fff', 
-    fontSize: 24, 
-    fontWeight: 'bold' 
-  },
-  headerSubtitle: { 
-    color: '#888', 
-    fontSize: 14 
-  },
-  scrollContent: { 
-    paddingHorizontal: 20,
-    paddingBottom: 20 
-  },
-  card: {
-    flexDirection: 'row',
-    backgroundColor: '#151515',
-    borderRadius: 16,
-    padding: 12,
-    marginBottom: 16,
-    alignItems: 'center',
-  },
-  productImage: { 
-    width: 80, 
-    height: 80, 
-    borderRadius: 12 
-  },
-  productInfo: { 
-    flex: 1, 
-    marginLeft: 12 
-  },
-  productName: { 
-    color: '#fff', 
-    fontSize: 16, 
-    fontWeight: 'bold' 
-  },
-  productDescription: { 
-    color: '#888', 
-    fontSize: 11, 
-    marginVertical: 4 
-  },
-  productPrice: { 
-    color: '#D21C56', 
-    fontSize: 16, 
-    fontWeight: 'bold' 
-  },
-  addButtonSmall: { 
-    backgroundColor: '#D21C56', 
-    width: 32, 
-    height: 32, 
-    borderRadius: 16, 
-    alignItems: 'center', 
-    justifyContent: 'center' 
-  },
-  counterContainer: { 
-    flexDirection: 'row', 
-    alignItems: 'center', 
-    backgroundColor: '#000', 
-    borderRadius: 25, 
-    padding: 4, 
-    borderWidth: 1, 
-    borderColor: '#252525' 
-  },
-  counterButton: { 
-    width: 28, 
-    height: 28, 
-    backgroundColor: '#222', 
-    borderRadius: 14, 
-    alignItems: 'center', 
-    justifyContent: 'center' 
-  },
-  counterText: { 
-    color: '#fff', 
-    marginHorizontal: 12, 
-    fontWeight: 'bold', 
-    fontSize: 16 
-  },
-  footer: {
-    borderTopWidth: 1,
-    borderTopColor: "#333",
-    paddingTop: 16,
-    paddingBottom: 50,
-    paddingHorizontal: 24,
-    backgroundColor: "#151515",
-  },
-  totalRow: { 
-    flexDirection: 'row', 
-    justifyContent: 'space-between', 
-    marginBottom: 14
-  },
-  totalLabel: { 
-    color: '#fff', 
-    fontSize: 16 
-  },
-  totalValue: { 
-    color: '#D21C56', 
-    fontSize: 22, 
-    fontWeight: 'bold' 
-  },
-  cartButton: { 
-    backgroundColor: "#D21C56",
-    height: 55,
-    borderRadius: 16,
-    alignItems: "center",
-    justifyContent: "center",
-    flexDirection: "row"
-  },
-  cartButtonDisabled: { 
-    backgroundColor: '#222' 
-  },
-  cartButtonText: { 
-    color: '#fff', 
-    fontSize: 16, 
-    fontWeight: 'bold' 
-  },
+const styles = (theme) => StyleSheet.create({
+  safeArea: { flex: 1, paddingTop: 60 },
+  container: { flex: 1 },
+  header: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 20, paddingBottom: 20 },
+  backButton: { backgroundColor: theme.card, padding: 10, borderRadius: 12, borderWidth: 1, borderColor: theme.cardBorder },
+  headerTextContainer: { flex: 1, marginLeft: 15 },
+  headerTitle: { color: theme.text, fontSize: 24, fontWeight: 'bold' },
+  headerSubtitle: { color: theme.textSecondary, fontSize: 14 },
+  scrollContent: { paddingHorizontal: 20, paddingBottom: 20 },
+  card: { flexDirection: 'row', backgroundColor: theme.card, borderRadius: 16, padding: 12, marginBottom: 16, alignItems: 'center', borderWidth: 1, borderColor: theme.cardBorder },
+  productImage: { width: 80, height: 80, borderRadius: 12 },
+  productInfo: { flex: 1, marginLeft: 12 },
+  productName: { color: theme.text, fontSize: 16, fontWeight: 'bold' },
+  productDescription: { color: theme.textSecondary, fontSize: 11, marginVertical: 4 },
+  productPrice: { color: theme.primary, fontSize: 16, fontWeight: 'bold' },
+  addButton: { backgroundColor: theme.primary, width: 32, height: 32, borderRadius: 16, alignItems: 'center', justifyContent: 'center' },
+  counterContainer: { flexDirection: 'row', alignItems: 'center', backgroundColor: theme.counterBg, borderRadius: 25, padding: 4, borderWidth: 1, borderColor: theme.cardBorder },
+  counterButton: { width: 28, height: 28, backgroundColor: theme.card, borderRadius: 14, alignItems: 'center', justifyContent: 'center' },
+  counterText: { color: theme.text, marginHorizontal: 12, fontWeight: 'bold', fontSize: 16 },
+  footer: { borderTopWidth: 1, borderTopColor: theme.footerBorder, paddingTop: 16, paddingBottom: 50, paddingHorizontal: 24, backgroundColor: theme.footerBg },
+  totalRow: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 14 },
+  totalLabel: { color: theme.text, fontSize: 16 },
+  totalValue: { color: theme.primary, fontSize: 22, fontWeight: 'bold' },
+  cartButton: { backgroundColor: theme.primary, height: 55, borderRadius: 16, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' },
+  cartButtonDisabled: { backgroundColor: theme.card },
+  cartButtonText: { color: '#fff', fontSize: 16, fontWeight: 'bold' },
 });
