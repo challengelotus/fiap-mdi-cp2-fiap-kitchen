@@ -1,214 +1,157 @@
-# 🍽️ FIAP Kitchen
+# 🍽️ FIAP Kitchen — Checkpoint 2
 
-Aplicativo mobile desenvolvido em React Native com Expo, com foco em simular um sistema de pedidos de uma cozinha/lanchonete.
-
----
-
-## 📱 Sobre o projeto
-
-### 💡 Problema que resolve
-
-O **FIAP Kitchen** foi desenvolvido para solucionar um problema comum enfrentado pelos alunos da FIAP:
-👉 **filas longas e incerteza no atendimento da cantina.**
-
-Muitos estudantes têm pouco tempo entre as aulas e acabam enfrentando filas demoradas sem saber quanto tempo irão esperar ou se ainda há produtos disponíveis.
-
-### 🎯 Operação escolhida
-
-A operação escolhida foi:
-
-👉 **Fila e incerteza na cantina**
-
-#### ❓ Por quê?
-
-Esse problema impacta diretamente:
-- A rotina dos alunos
-- O tempo disponível para alimentação
-- A organização da cantina
-
-O aplicativo propõe uma solução digital simples:
-
-➡️ Permitir que o usuário monte seu pedido antecipadamente
-
-➡️ Reduzir tempo de espera
-
-➡️ Melhorar a experiência geral
+Aplicativo mobile desenvolvido em **React Native + Expo**, criado para modernizar a experiência da cantina da FIAP por meio de pedidos antecipados, autenticação de usuários, persistência local e uma interface refinada.
 
 ---
 
-## ⚙️ Funcionalidades implementadas
-- 🔐 Tela de login simples
-- 📋 Visualização do cardápio dividido em categorias:
-    - Salgados
-    - Bebidas
-    - Sobremesas
-- ➕ Adição e remoção de itens no carrinho
-- 🛒 Tela de carrinho com:
-    - Quantidade de itens
-    - Valor total
-- 📦 Confirmação de pedido
-- 🔄 Atualização dinâmica do carrinho
+# 📱 Sobre o Projeto
+
+## 💡 Problema que resolve
+O **FIAP Kitchen** foi criado para solucionar um problema recorrente enfrentado por alunos da FIAP:
+
+👉 **Filas longas, demora no atendimento e incerteza na cantina.**
+
+Muitos estudantes possuem intervalos curtos entre aulas e precisam de uma solução prática para:
+- Consultar produtos disponíveis
+- Fazer pedidos com rapidez
+- Reduzir tempo de espera
+- Organizar melhor sua rotina
 
 ---
 
-## 📂 Estrutura do projeto
+## 🎯 Operação FIAP escolhida
+### 🍔 Cantina / Alimentação no campus
 
-```
-app/
- ├── _layout.js        # Layout e providers
- ├── index.js          # Tela de login
- ├── cardapio.js       # Menu principal
- ├── salgados.js       # Lista de salgados
- ├── bebidas.js        # Lista de bebidas
- ├── sobremesas.js     # Lista de sobremesas
- ├── carrinho.js       # Tela do carrinho
- ├── codigoPedido.js   # Tela do código do pedido
- └── pagamento.js      # Tela de pagamento
+Escolhemos essa operação porque ela impacta diretamente a rotina acadêmica dos alunos, especialmente em horários de pico.
 
-context/
- └── CarrinhoContext.js # Gerenciamento global do carrinho
-
-data/                 # Armazenameto dos dados dos produtos
- ├── salgados.js
- ├── bebidas.js
- └── sobremesas.js
-```
-
-### ⚛️ Hooks utilizados
-
-- ```useState```: Controle de estado (login, carrinho, quantidades)
-- ```useContext```: Compartilhamento global do carrinho
+### 🚀 Nossa solução:
+O app permite que o usuário:
+- Faça cadastro e login seguro
+- Monte pedidos antecipadamente
+- Gerencie carrinho
+- Realize pagamentos simulados
+- Consulte histórico de compras
+- Tenha seus dados persistidos mesmo após fechar o app
 
 ---
 
-## 🧠 Funcionalidades principais
+# 🆕 Evolução do CP1 para o CP2
 
-### 🔐 Login
+## 🔥 Principais melhorias implementadas:
+### No CP1:
+- Login mockado
+- Cardápio
+- Carrinho
+- Pagamento
 
-* Autenticação simples (mock)
-* Redirecionamento para o cardápio após login
-
-> Para acessar o sistema, utilize:
-> ```bash
-> Usuário: rm555332
-> Senha: 123456
-> ```
-
-### 📋 Cardápio
-
-* Exibição de categorias:
-
-  * Salgados
-  * Bebidas
-  * Sobremesas
-
-### 🛒 Carrinho
-
-* Adicionar itens
-* Remover itens
-* Controle de quantidade
-* Cálculo automático de:
-
-  * Total de itens
-  * Valor total
-
-### 📦 Resumo do pedido
-
-* Listagem dos produtos selecionados
-* Valor total
-* Confirmação do pedido
+### No CP2:
+- 🔐 Sistema real de autenticação (Cadastro + Login)
+- 💾 Persistência com AsyncStorage
+- 🌐 Gerenciamento global com Context API
+- 📧 Validação de e-mail exclusivo FIAP
+- 🌙 Tema Dark/Light dinâmico
+- 📜 Histórico de pagamentos
+- 🚪 Logout com persistência de sessão
+- 🛡️ Rotas protegidas para usuários autenticados
+- 🎨 Interface visual aprimorada
 
 ---
 
-## ⚙️ Como rodar o projeto
+# ⚙️ Funcionalidades Implementadas
 
-### 🧰 Pré-requisitos
+## 🔐 Autenticação
+- Cadastro com:
+  - Nome completo
+  - E-mail FIAP obrigatório (`@fiap.com.br`)
+  - Senha (mín. 6 caracteres)
+  - Confirmação de senha
+- Login com validação
+- Persistência de sessão
+- Logout funcional
 
-Antes de começar, você precisa ter instalado:
-- Node.js
-- npm ou yarn
-- Expo CLI
-- Aplicativo Expo Go (no celular)
-ou emulador Android/iOS
+---
 
-### 1. Clonar o repositório
+## 📋 Cardápio
+- Salgados
+- Bebidas
+- Sobremesas
+
+---
+
+## 🛒 Carrinho
+- Adição de produtos
+- Remoção de produtos
+- Quantidade dinâmica
+- Total automático
+
+---
+
+## 💳 Pagamento
+- Resumo do pedido
+- Confirmação
+- Persistência do pedido no histórico
+
+---
+
+## 📜 Histórico de Pedidos
+- Lista de compras anteriores
+- Detalhamento de cada pedido:
+  - Itens
+  - Quantidade
+  - Valor total
+  - Data
+
+---
+
+## 🌙 Diferencial Técnico Implementado (Obrigatório)
+# Tema Dark/Light Dinâmico
+
+### ✔️ Justificativa:
+Escolhemos implementar o **Modo Escuro / Tema Dinâmico** porque ele melhora:
+- Acessibilidade visual
+- Personalização da experiência
+- Usabilidade em ambientes com pouca luz
+
+### 🛠️ Implementação:
+- ThemeContext com Context API
+- Alternância global entre temas
+- Persistência da preferência do usuário com AsyncStorage
+
+---
+
+# 🧠 Decisões Técnicas
+
+## 📂 Estrutura de Pastas
 
 ```bash
-git clone https://github.com/jaoAprendiz/fiap-mdi-cp1-fiap-kitchen.git
-cd fiap-mdi-cp1-fiap-kitchen/
+fiap-mdi-cp2-fiap-kitchen/
+├── app/
+│   ├── _layout.jsx
+│   ├── bebidas.js
+│   ├── cadastro.js
+│   ├── cardapio.js
+│   ├── carrinho.js
+│   ├── carrinho.js
+│   ├── codigoPedido.js
+│   ├── detalhePedido.js
+│   ├── historico.js
+│   ├── index.js
+│   ├── pagamento.js
+│   └── salgados.js
+│   ├── sobremesas.js
+│
+├── context/
+│   ├── AuthContext.js
+│   ├── CarrinhoContext.js
+│   └── ThemeContext.js
+│
+├── constants/
+│   └── colors.js
+│
+├── data/
+│   ├── bebidas.js
+│   ├── salgados.js
+│   └── sobremesas.js
+│
+└── assets/
 ```
-
-### 2. Instalar dependências
-
-```bash
-npm install
-```
-
-### 3. Rodar o projeto
-
-```bash
-npx expo start
-```
-
----
-
-## 🎥 Demonstração
-
-### Telas Login
-
-<img src="./prints/TelaLogin.jpg" width='200'>
-<img src="./prints/TelaLoginErro.jpg" width='200'>
-
-### Tela Cardapio
-
-<img src="./prints/TelaCardapio.jpg" width='200'>
-
-### Telas Produtos
-
-<img src="./prints/TelaSalgados.jpg" width='200'>
-<img src="./prints/TelaBebidas.jpg" width='200'>
-<img src="./prints/TelaSobremesas.jpg" width='200'>
-
-### Telas Carrinho
-
-<img src="./prints/TelaCarrinhoVazio.jpg" width='200'>
-<img src="./prints/TelaCarrinhoCheio.jpg" width='200'>
-
-### Telas Pagamento
-
-<img src="./prints/TelaPagamento.jpg" width='200'>
-<img src="./prints/TelaProcessando.jpg" width='200'>
-
-### Tela Pedido Confirmado
-
-<img src="./prints/TelaCorfirmado.jpg" width='200'>
-
-### Vídeo Demonstrativo
-
-https://github.com/user-attachments/assets/32cbb07e-9842-4935-b68d-f5203309ee52
-
----
-
-## 📌 Melhorias futuras
-
-* Persistência do carrinho (AsyncStorage)
-* Integração com backend
-* Sistema de autenticação real
-* Melhorias de UI/UX
-* Refatoração com TypeScript
-
----
-
-## 👨‍💻 Autores
-- Maria Alice Freitas Araújo (RM557516)
-- Pedro Henrique Mendes dos Santos (RM555332)
-- João Victor Soave - RM557595
-- Vinícius Fernandes Tavares Bittencourt (RM558909)
-- Rafael Teofilo Lucena (RM555600)
-> Desenvolvido para fins acadêmicos (FIAP).
-
----
-
-## 📄 Licença
-
-Este projeto é apenas para fins educacionais.
