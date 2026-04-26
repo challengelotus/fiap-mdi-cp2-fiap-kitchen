@@ -137,8 +137,8 @@ fiap-mdi-cp2-fiap-kitchen/
 │   ├── historico.js
 │   ├── index.js
 │   ├── pagamento.js
-│   └── salgados.js
-│   ├── sobremesas.js
+│   ├── salgados.js
+│   └── sobremesas.js
 │
 ├── context/
 │   ├── AuthContext.js
