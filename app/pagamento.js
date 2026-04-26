@@ -4,16 +4,15 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useCarrinho } from '../context/CarrinhoContext';
+import { useTheme } from '../context/ThemeContext';
 
-const bgImage = require('../assets/backgroundImage.png');
-
-function Loading({ visible }) {
+function Loading({ visible, theme }) {
   return (
     <Modal transparent animationType="fade" visible={visible}>
-      <View style={styles.modalBackground}>
-        <View style={styles.loadingBox}>
-          <ActivityIndicator size="large" />
-          <Text style={styles.loadingText}>Processando...</Text>
+      <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', alignItems: 'center' }}>
+        <View style={{ width: 150, height: 150, backgroundColor: theme.card, borderRadius: 16, justifyContent: 'center', alignItems: 'center', gap: 12 }}>
+          <ActivityIndicator size="large" color={theme.primary} />
+          <Text style={{ color: theme.text }}>Processando...</Text>
         </View>
       </View>
     </Modal>
@@ -23,204 +22,83 @@ function Loading({ visible }) {
 export default function PagamentoScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { valorTotal, totalItens } = useCarrinho();
-  const totalFormatado = valorTotal.toLocaleString('pt-BR', {
-    style: 'currency',
-    currency: 'BRL',
-  });
-
+  const { valorTotal, totalItens, finalizarPedido } = useCarrinho();
+  const { theme, isDark } = useTheme();
   const [selectedPayment, setSelectedPayment] = useState('PIX');
+  const [loading, setLoading] = useState(false);
+  const s = styles(theme);
 
-  const handleConfirm = async () => {
-    simularRequisicao();
-    await delay(3000);
-    router.push('/codigoPedido');
-  };
-
+  const totalFormatado = valorTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   const paymentMethods = ['PIX', 'Crédito', 'Débito', 'Dinheiro'];
 
-  const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));   
-
-  const [loading, setLoading] = useState(false);
-  const simularRequisicao = async () => {
+  const handleConfirm = async () => {
     setLoading(true);
-    await delay(3000);
+    const pedido = await finalizarPedido();
+    await new Promise(r => setTimeout(r, 2000));
     setLoading(false);
+    if (pedido) router.push({ pathname: '/codigoPedido', params: { codigo: pedido.codigo } });
   };
 
-  return (
-    <ImageBackground source={bgImage} style={styles.container}>
-      {/* ScrollView agora contém apenas o conteúdo rolável */}
-      <ScrollView contentContainerStyle={styles.scrollContent}>
-        
-        {/* CABEÇALHO */}
-        <View style={styles.header}>
-          <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-            <Ionicons name="chevron-back" size={24} color="#FFF" />
+  const content = (
+    <>
+      <ScrollView contentContainerStyle={s.scrollContent}>
+        <View style={s.header}>
+          <TouchableOpacity onPress={() => router.back()} style={s.backButton}>
+            <Ionicons name="chevron-back" size={24} color={theme.text} />
           </TouchableOpacity>
-          <Text style={styles.headerTitle}>Pagamento</Text>
+          <Text style={s.headerTitle}>Pagamento</Text>
         </View>
-
-        {/* RESUMO DO PEDIDO */}
-        <View style={styles.summaryCard}>
-          <Text style={styles.summaryTitle}>Total do pedido</Text>
-          <Text style={styles.summaryPrice}>{totalFormatado}</Text>
-          <Text style={styles.summaryDetails}>{totalItens} itens selecionados</Text>
-          <Loading visible={loading} />
+        <View style={s.summaryCard}>
+          <Text style={s.summaryTitle}>Total do pedido</Text>
+          <Text style={s.summaryPrice}>{totalFormatado}</Text>
+          <Text style={s.summaryDetails}>{totalItens} itens selecionados</Text>
         </View>
-
-        {/* FORMA DE PAGAMENTO */}
-        <View style={styles.paymentSection}>
-          <Text style={styles.sectionTitle}>Forma de pagamento</Text>
-          <View style={styles.paymentGrid}>
+        <View style={s.paymentSection}>
+          <Text style={s.sectionTitle}>Forma de pagamento</Text>
+          <View style={s.paymentGrid}>
             {paymentMethods.map((method) => (
               <TouchableOpacity
                 key={method}
-                style={[
-                  styles.paymentOption,
-                  selectedPayment === method && styles.paymentOptionSelected,
-                ]}
+                style={[s.paymentOption, selectedPayment === method && s.paymentOptionSelected]}
                 onPress={() => setSelectedPayment(method)}
               >
-                <Text style={[
-                  styles.paymentOptionText,
-                  selectedPayment === method && styles.paymentOptionTextSelected
-                ]}>{method}</Text>
+                <Text style={[s.paymentOptionText, selectedPayment === method && s.paymentOptionTextSelected]}>{method}</Text>
               </TouchableOpacity>
             ))}
           </View>
         </View>
-
       </ScrollView>
-
-      {/* BOTÃO CONFIRMAR */}
-      <View style={[styles.footer, { paddingBottom: insets.bottom + 20 }]}>
-        <TouchableOpacity style={styles.confirmButton} onPress={handleConfirm}>
-          <Text style={styles.confirmButtonText}>Confirmar Pagamento</Text>
+      <View style={[s.footer, { paddingBottom: insets.bottom + 20 }]}>
+        <TouchableOpacity style={s.confirmButton} onPress={handleConfirm}>
+          <Text style={s.confirmButtonText}>Confirmar Pagamento</Text>
         </TouchableOpacity>
       </View>
-    </ImageBackground>
+      <Loading visible={loading} theme={theme} />
+    </>
   );
+
+  if (isDark) return <ImageBackground source={require('../assets/backgroundImage.png')} style={s.container}>{content}</ImageBackground>;
+  return <View style={[s.container, { backgroundColor: theme.background }]}>{content}</View>;
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#000',
-  },
-  scrollContent: {
-    padding: 24,
-    paddingTop: 60,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 30,
-  },
-  backButton: {
-    padding: 8,
-    marginRight: 10,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.2)',
-    borderRadius: 12,
-  },
-  headerTitle: {
-    color: '#FFF',
-    fontSize: 28,
-    fontWeight: '700',
-  },
-  summaryCard: {
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: 16,
-    padding: 24,
-    marginBottom: 40,
-  },
-  summaryTitle: {
-    color: 'rgba(255, 255, 255, 0.7)',
-    fontSize: 14,
-    marginBottom: 8,
-  },
-  summaryPrice: {
-    color: '#E31C5F',
-    fontSize: 40,
-    fontWeight: '700',
-    marginBottom: 4,
-  },
-  summaryDetails: {
-    color: 'rgba(255, 255, 255, 0.5)',
-    fontSize: 14,
-  },
-  paymentSection: {
-    marginBottom: 50,
-  },
-  sectionTitle: {
-    color: '#FFF',
-    fontSize: 18,
-    fontWeight: '600',
-    marginBottom: 20,
-  },
-  paymentGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-  },
-  paymentOption: {
-    width: '48%',
-    backgroundColor: 'rgba(255, 255, 255, 0.03)',
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: 12,
-    paddingVertical: 35,
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  paymentOptionSelected: {
-    borderColor: '#E31C5F',
-    backgroundColor: 'rgba(227, 28, 95, 0.05)',
-  },
-  paymentOptionText: {
-    color: 'rgba(255, 255, 255, 0.8)',
-    fontSize: 16,
-    fontWeight: '500',
-  },
-  paymentOptionTextSelected: {
-    color: '#FFF',
-    fontWeight: '700',
-  },
-  // ESTILO PARA O CONTÊINER DO BOTÃO DE RODAPÉ
-  footer: {
-    paddingHorizontal: 24,
-    marginTop: 'auto',
-  },
-  confirmButton: {
-    backgroundColor: '#E31C5F',
-    borderRadius: 12,
-    paddingVertical: 18,
-    alignItems: 'center',
-  },
-  confirmButtonText: {
-    color: '#FFF',
-    fontSize: 18,
-    fontWeight: '600',
-  },
-
-  modalBackground: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  loadingBox: {
-    width: 150,
-    height: 150,
-    backgroundColor: '#151515',
-    borderRadius: 10,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  loadingText: {
-    color: '#fff'
-  }
+const styles = (theme) => StyleSheet.create({
+  container: { flex: 1 },
+  scrollContent: { padding: 24, paddingTop: 60 },
+  header: { flexDirection: 'row', alignItems: 'center', marginBottom: 30 },
+  backButton: { padding: 10, marginRight: 10, borderWidth: 1, borderColor: theme.cardBorder, borderRadius: 12, backgroundColor: theme.card },
+  headerTitle: { color: theme.text, fontSize: 28, fontWeight: '700' },
+  summaryCard: { backgroundColor: theme.paymentCard, borderWidth: 1, borderColor: theme.paymentBorder, borderRadius: 16, padding: 24, marginBottom: 40 },
+  summaryTitle: { color: theme.textSecondary, fontSize: 14, marginBottom: 8 },
+  summaryPrice: { color: theme.primary, fontSize: 40, fontWeight: '700', marginBottom: 4 },
+  summaryDetails: { color: theme.textMuted, fontSize: 14 },
+  paymentSection: { marginBottom: 50 },
+  sectionTitle: { color: theme.text, fontSize: 18, fontWeight: '600', marginBottom: 20 },
+  paymentGrid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' },
+  paymentOption: { width: '48%', backgroundColor: theme.paymentCard, borderWidth: 1, borderColor: theme.paymentBorder, borderRadius: 12, paddingVertical: 35, alignItems: 'center', marginBottom: 16 },
+  paymentOptionSelected: { borderColor: theme.primary, backgroundColor: 'rgba(210,28,86,0.08)' },
+  paymentOptionText: { color: theme.textSecondary, fontSize: 16, fontWeight: '500' },
+  paymentOptionTextSelected: { color: theme.text, fontWeight: '700' },
+  footer: { paddingHorizontal: 24 },
+  confirmButton: { backgroundColor: theme.primary, borderRadius: 12, paddingVertical: 18, alignItems: 'center' },
+  confirmButtonText: { color: '#fff', fontSize: 18, fontWeight: '600' },
 });

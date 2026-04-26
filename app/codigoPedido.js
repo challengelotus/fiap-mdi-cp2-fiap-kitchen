@@ -1,157 +1,70 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
+import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-
-const bgImage = require('../assets/backgroundImage.png');
-
-function gerarSenha() {
-  const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  let senha = '';
-
-  for (let i = 0; i < 8; i++) {
-    const indice = Math.floor(Math.random() * caracteres.length);
-    senha += caracteres[indice];
-  }
-
-  return senha;
-}
+import { useTheme } from '../context/ThemeContext';
 
 export default function CodigoPagamentoScreen() {
   const router = useRouter();
-  const insets = useSafeAreaInsets(); 
-  const senha = gerarSenha();
+  const insets = useSafeAreaInsets();
+  const { tema, isDark } = useTheme();
+  const { theme } = useTheme();
+  const { codigo } = useLocalSearchParams();
+  const s = styles(theme);
 
-  const handleNewOrder = () => {
-    router.replace('/cardapio');
-  };
-
-  return (
-    <ImageBackground source={bgImage} style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContent}>
-        
-        {/* CABEÇALHO */}
-        <View style={styles.header}>
-          <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-            <Ionicons name="chevron-back" size={24} color="#FFF" />
+  const content = (
+    <>
+      <ScrollView contentContainerStyle={s.scrollContent}>
+        <View style={s.header}>
+          <TouchableOpacity onPress={() => router.replace('/cardapio')} style={s.backButton}>
+            <Ionicons name="chevron-back" size={24} color={theme.text} />
           </TouchableOpacity>
-          <Text style={styles.headerTitle}>Pedido Confirmado</Text>
+          <Text style={s.headerTitle}>Pedido Confirmado</Text>
         </View>
-
-        {/* ÁREA DE SUCESSO */}
-        <View style={styles.successArea}>
-          <View style={styles.checkIcon}>
-            <Ionicons name="checkmark" size={32} color="#34C759" />
+        <View style={s.successArea}>
+          <View style={s.checkIcon}>
+            <Ionicons name="checkmark" size={32} color={theme.success} />
           </View>
-          <Text style={styles.successText}>Pedido realizado com sucesso</Text>
+          <Text style={s.successText}>Pedido realizado com sucesso</Text>
         </View>
-
-        {/* CARTÃO DO CÓDIGO */}
-        <View style={styles.codeCard}>
-          <Text style={styles.codeTitle}>Código do pedido</Text>
-          <Text style={styles.codeValue}>{senha}</Text>
-          <Text style={styles.codeSubtitle}>Apresente este código ao retirar seu pedido</Text>
+        <View style={s.codeCard}>
+          <Text style={s.codeTitle}>Código do pedido</Text>
+          <Text style={s.codeValue}>{codigo}</Text>
+          <Text style={s.codeSubtitle}>Apresente este código ao retirar seu pedido</Text>
         </View>
-
       </ScrollView>
-
-      {/* BOTÃO NOVO PEDIDO*/}
-      <View style={[styles.footer, { paddingBottom: insets.bottom + 20 }]}>
-        <TouchableOpacity style={styles.newOrderButton} onPress={handleNewOrder}>
-          <Text style={styles.newOrderButtonText}>Novo pedido</Text>
+      <View style={[s.footer, { paddingBottom: insets.bottom + 20 }]}>
+        <TouchableOpacity style={s.newOrderButton} onPress={() => router.replace('/cardapio')}>
+          <Text style={s.newOrderButtonText}>Novo pedido</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={s.histButton} onPress={() => router.push('/historico')}>
+          <Text style={s.histButtonText}>Ver histórico</Text>
         </TouchableOpacity>
       </View>
-    </ImageBackground>
+    </>
   );
+
+  if (isDark) return <ImageBackground source={require('../assets/backgroundImage.png')} style={s.container}>{content}</ImageBackground>;
+  return <View style={[s.container, { backgroundColor: theme.background }]}>{content}</View>;
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#000',
-  },
-  scrollContent: {
-    padding: 24,
-    paddingTop: 60,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 60,
-  },
-  backButton: {
-    padding: 8,
-    marginRight: 10,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.2)',
-    borderRadius: 12,
-  },
-  headerTitle: {
-    color: '#FFF',
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  successArea: {
-    alignItems: 'center',
-    marginBottom: 50,
-  },
-  checkIcon: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    borderWidth: 2,
-    borderColor: '#34C759',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  successText: {
-    color: '#FFF',
-    fontSize: 18,
-    fontWeight: '600',
-    textAlign: 'center',
-  },
-  codeCard: {
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: 16,
-    padding: 30,
-    alignItems: 'center',
-    marginBottom: 60,
-  },
-  codeTitle: {
-    color: 'rgba(255, 255, 255, 0.7)',
-    fontSize: 14,
-    marginBottom: 15,
-  },
-  codeValue: {
-    color: '#E31C5F',
-    fontSize: 42,
-    fontWeight: '700',
-    letterSpacing: 4,
-    marginBottom: 15,
-  },
-  codeSubtitle: {
-    color: 'rgba(255, 255, 255, 0.5)',
-    fontSize: 12,
-    textAlign: 'center',
-  },
-  // ESTILO PARA O CONTÊINER DO BOTÃO DE RODAPÉ
-  footer: {
-    paddingHorizontal: 24,
-    marginTop: 'auto',
-  },
-  newOrderButton: {
-    backgroundColor: '#E31C5F',
-    borderRadius: 12,
-    paddingVertical: 18,
-    alignItems: 'center',
-  },
-  newOrderButtonText: {
-    color: '#FFF',
-    fontSize: 18,
-    fontWeight: '600',
-  },
+const styles = (theme) => StyleSheet.create({
+  container: { flex: 1 },
+  scrollContent: { padding: 24, paddingTop: 60 },
+  header: { flexDirection: 'row', alignItems: 'center', marginBottom: 60 },
+  backButton: { padding: 10, marginRight: 10, borderWidth: 1, borderColor: theme.cardBorder, borderRadius: 12, backgroundColor: theme.card },
+  headerTitle: { color: theme.text, fontSize: 24, fontWeight: '600' },
+  successArea: { alignItems: 'center', marginBottom: 50 },
+  checkIcon: { width: 60, height: 60, borderRadius: 30, borderWidth: 2, borderColor: theme.success, justifyContent: 'center', alignItems: 'center', marginBottom: 20 },
+  successText: { color: theme.text, fontSize: 18, fontWeight: '600', textAlign: 'center' },
+  codeCard: { backgroundColor: theme.paymentCard, borderWidth: 1, borderColor: theme.paymentBorder, borderRadius: 16, padding: 30, alignItems: 'center', marginBottom: 60 },
+  codeTitle: { color: theme.textSecondary, fontSize: 14, marginBottom: 15 },
+  codeValue: { color: theme.primary, fontSize: 42, fontWeight: '700', letterSpacing: 4, marginBottom: 15 },
+  codeSubtitle: { color: theme.textMuted, fontSize: 12, textAlign: 'center' },
+  footer: { paddingHorizontal: 24, gap: 12 },
+  newOrderButton: { backgroundColor: theme.primary, borderRadius: 12, paddingVertical: 18, alignItems: 'center' },
+  newOrderButtonText: { color: '#fff', fontSize: 18, fontWeight: '600' },
+  histButton: { backgroundColor: theme.card, borderWidth: 1, borderColor: theme.cardBorder, borderRadius: 12, paddingVertical: 14, alignItems: 'center' },
+  histButtonText: { color: theme.text, fontSize: 16, fontWeight: '500' },
 });
