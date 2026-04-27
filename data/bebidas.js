@@ -20,4 +20,32 @@ export const BEBIDAS = [
     preco: 6.00,
     imagem: require('../assets/refrigerante_lata.jpg'),
   },
+  {
+    id: 'b4',
+    nome: 'Café Expresso',
+    descricao: 'Café puro e forte, preparado na máquina italiana',
+    preco: 5.00,
+    imagem: require('../assets/cafe_expresso.jpg'),
+  },
+  {
+    id: 'b5',
+    nome: 'Chá Gelado de Limão',
+    descricao: '500ml - Chá preto com limão e hortelã, refrescante',
+    preco: 7.00,
+    imagem: require('../assets/cha_gelado_limao.jpg'),
+  },
+  {
+    id: 'b6',
+    nome: 'Água Mineral',
+    descricao: '500ml - Água mineral com ou sem gás',
+    preco: 4.00,
+    imagem: require('../assets/agua.png'),
+  },
+  {
+    id: 'b7',
+    nome: 'Smoothie de Morango',
+    descricao: '400ml - Morangos frescos, iogurte e mel batidos',
+    preco: 11.00,
+    imagem: require('../assets/smoothie_morango.jpg'),
+  },
 ];
