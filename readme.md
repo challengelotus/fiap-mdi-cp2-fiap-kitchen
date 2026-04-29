@@ -2,6 +2,10 @@
 
 Aplicativo mobile desenvolvido em **React Native + Expo**, criado para modernizar a experiência da cantina da FIAP por meio de pedidos antecipados, autenticação de usuários, persistência local e uma interface refinada.
 
+<p align="center">
+  <img src="/demo.jpg" width="300px">
+</p>
+
 ---
 
 # 📱 Sobre o Projeto
