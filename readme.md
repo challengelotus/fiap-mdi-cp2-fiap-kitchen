@@ -2,10 +2,6 @@
 
 Aplicativo mobile desenvolvido em **React Native + Expo**, criado para modernizar a experiência da cantina da FIAP por meio de pedidos antecipados, autenticação de usuários, persistência local e uma interface refinada.
 
-<p align="center">
-  <img src="/demo.jpg" width="300px">
-</p>
-
 ---
 
 # 📱 Sobre o Projeto
@@ -159,3 +155,49 @@ fiap-mdi-cp2-fiap-kitchen/
 │
 └── assets/
 ```
+
+## 🎥 Demonstração
+
+### Telas Login
+
+<img src="./prints/TelaLogin.jpg" width='200'>
+<img src="./prints/TelaLoginErro.jpg" width='200'>
+<img src="./prints/TelaLoginWhite.jpg" width="200">
+
+### Tela Cardapio
+
+<img src="./prints/TelaCardapio.jpg" width='200'>
+<img src="./prints/TelaCardapioWhite.jpg" width='200'>
+
+### Telas Produtos
+
+<img src="./prints/TelaSalgados.jpg" width='200'>
+<img src="./prints/TelaBebidas.jpg" width='200'>
+<img src="./prints/TelaSobremesas.jpg" width='200'>
+
+### Telas Carrinho
+
+<img src="./prints/TelaCarrinhoVazio.jpg" width='200'>
+<img src="./prints/TelaCarrinhoCheio.jpg" width='200'>
+
+### Telas Pagamento
+
+<img src="./prints/TelaPagamento.jpg" width='200'>
+<img src="./prints/TelaProcessando.jpg" width='200'>
+
+### Tela Pedido Confirmado
+
+<img src="./prints/TelaCorfirmado.jpg" width='200'>
+
+### Tela Histórico de Pedidos
+
+<img src="./prints/TelaHistoricoWhite.jpg" width='200'>
+
+### Tela Detalhes do Pedido
+
+<img src="./prints/TelaDetalhesWhite.jpg" width='200'>
+
+### Vídeo Demonstrativo
+
+
+---
