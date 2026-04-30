@@ -199,5 +199,6 @@ fiap-mdi-cp2-fiap-kitchen/
 
 ### Vídeo Demonstrativo
 
+https://github.com/user-attachments/assets/a6c1a5e7-fb15-47a1-972f-29feb95bfc7b
 
 ---
